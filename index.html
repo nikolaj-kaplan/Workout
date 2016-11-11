@@ -1,34 +1,83 @@
 <html>
-    <head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
-        <link rel="stylesheet" href="https://material.angularjs.org/latest/angular-material.min.css" />
-        <script src="https://material.angularjs.org/latest/angular-material.min.js"></script>
-    </head>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script> </head>
+
 <body ng-app="Workout" ng-controller="main">
-    <ul>
-        <li ng-repeat="task in tasks">
-            <button ng-click="startTask(task)">{{task.name}} {{(task.running?'running: ' + task.remaining : '')}}</button>
-        </li>
-    </ul>
-    <script>
-      var app = angular.module('Workout', []);
-      app.controller('main', function($scope, $interval) {
+<!--<div ng-show="!runningTask">
+    <md-button class="md-raised md-primary"  ng-repeat="task in tasks" ng-click="startTask(task)">
+        {{task.name}} {{task.duration}}
+    </md-button>
+</div>-->
+	<md-list flex ng-show="!runningTask">
+		<md-list-item class="md-3-line " ng-repeat="task in tasks" ng-click="startTask(task)">
+			<img ng-src="http://previews.123rf.com/images/rastudio/rastudio1606/rastudio160600983/57760172-Man-doing-abdominal-crunches-vector-sketch-icon-isolated-on-background-Hand-drawn-Man-doing-abdomina-Stock-Vector.jpg"
+				class="md-avatar" />
+			<div class="md-list-item-text" layout="column">
+				<h3>{{ task.name }}</h3>
+				<h4>{{ task.duration }} </h4>
+				<p ng-show="task.completed">Flot!!</p>
+			</div>
+            <md-divider ng-if="!$last"></md-divider>
+ 		</md-list-item>
+	</md-list>
+
+<div ng-show="runningTask">
+        <md-progress-linear md-mode="determinate" value="{{progress}}"></md-progress-linear>
+	<md-content layout-padding >
+        <div layout-align="center center" layout="column">
+            <h1>{{runningTask.remaining}}</h1>
+            <h3>seconds left</h3>
+            <md-button class="md-raised" ng-click="stopTask(runningTask)">Stop</md-button>
+            <!--<md-progress-circular md-mode="determinate" value={{progress}} />-->
+        </div>
+	</md-content>
+        <md-progress-linear md-mode="determinate" value="{{progress}}"></md-progress-linear>
+</div>
+	<script>
+      var app = angular.module('Workout', ['ngMaterial'])
+        .config(function($mdThemingProvider) {
+            $mdThemingProvider.theme('default');
+        });
+
+      app.controller('main', function($scope, $interval, $timeout) {
             $scope.tasks = [
-            {name:'mavebøjninger',duration:30},
-            {name:'armbøjninger',duration:30}
+                {name:'mavebøjninger',duration:30},
+                {name:'armbøjninger',duration:30},
+                {name:'pushups',duration:5}
             ];
             $scope.startTask = function(task){
+                $scope.progress = 0;
+                if(task.running === true) return;
+                  $scope.runningTask = task;
                 task.remaining = task.duration;
+                task.value = task.duration;
                 task.running = true;
-                var interval = $interval(function() {
-                    if(task.remaining === 0){
-                        task.running = false;
+                task.interval = $interval(function() {
+                    if(task.remaining <= 0){
+                        $scope.stopTask(task);
+                        task.completed = true;
                     }
-                    task.remaining = task.remaining - 1;
-                }, 1000, task.duration + 10);
+                    task.value = task.value - 0.1;
+                    $scope.progress = 100 - (task.value/task.duration) * 100;
+                    task.remaining = Math.ceil(task.value); 
+                }, 100);
+            };
+
+            $scope.stopTask = function(task){
+                task.running = false;
+                $interval.cancel(task.interval);
+                $scope.runningTask = undefined;
             };
         });
   </script>
 </body>
+
 </html>
