@@ -3,6 +3,8 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-icon" href="https://www.google.dk/imgres?imgurl=http%3A%2F%2Fwww.wpclipart.com%2Frecreation%2Ffitness%2Ffitness_2%2Fexercise_fitness_icon.png&imgrefurl=http%3A%2F%2Fwww.wpclipart.com%2Frecreation%2Ffitness%2Ffitness_2%2Fexercise_fitness_icon.png.html&docid=HO25zAsbvDETCM&tbnid=X6E-KzZ0-1ytoM%3A&vet=1&w=256&h=256&safe=off&bih=887&biw=1750&ved=0ahUKEwj_nYDu6KHQAhVIhywKHXKmDT4QMwhRKCswKw&iact=mrc&uact=8">
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
@@ -17,7 +19,7 @@
     </md-button>
 </div>-->
 	<md-list flex ng-show="!runningTask">
-		<md-list-item class="md-3-line " ng-repeat="task in tasks" ng-click="startTask(task)">
+		<md-list-item class="md-3-line " ng-repeat="task in tasks" ng-click="startTask(task)" >
 			<img ng-src="http://previews.123rf.com/images/rastudio/rastudio1606/rastudio160600983/57760172-Man-doing-abdominal-crunches-vector-sketch-icon-isolated-on-background-Hand-drawn-Man-doing-abdomina-Stock-Vector.jpg"
 				class="md-avatar" />
 			<div class="md-list-item-text" layout="column">
